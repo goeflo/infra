@@ -1,6 +1,7 @@
 # ---> Terraform
 # Local .terraform directories
 **/.terraform/*
+**/.terraform.lock*
 
 # .tfstate files
 *.tfstate
@@ -37,3 +38,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# Ignore all .env fle with sensitive data
+.env
