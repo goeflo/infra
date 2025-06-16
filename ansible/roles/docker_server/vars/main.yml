@@ -1,0 +1,17 @@
+---
+# roles/docker_server/vars/main.yml
+
+docker_base_dir: "docker"
+nginx_base_dir : "nginx"
+traefik_base_dir: "traefik"
+
+email: "florian@goeldenitz.org"
+
+docker_nginx_base_dir: "{{ docker_base_dir }}/{{ nginx_base_dir }}"
+docker_traefik_base_dir: "{{ docker_base_dir }}/{{ traefik_base_dir }}"
+
+# additional debian packages
+debian_packages:
+  - curl
+  - docker.io
+  - docker-compose

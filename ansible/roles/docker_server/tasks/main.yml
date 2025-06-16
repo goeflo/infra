@@ -1,0 +1,78 @@
+#- name: "{{ inventory_hostname }} | disable ipv6 network"
+#  ansible.builtin.lineinfile:
+#    path: /etc/systemd/resolved.conf
+#    line: DNSStubListener=no
+#    create: yes
+#    regexp: '^#?DNSStubListener=' 
+#  notify: restart systemd-resolved
+#sysctl -w net.ipv6.conf.all.disable_ipv6=0
+#sysctl -w net.ipv6.conf.default.disable_ipv6=0
+#sysctl -w net.ipv6.conf.tun0.disable_ipv6=0
+
+- name: "{{ inventory_hostname }} | update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: "{{ inventory_hostname }} | install debian packages"
+  ansible.builtin.apt:
+    pkg: "{{ debian_packages }}"
+    state: present
+
+- name: "{{ inventory_hostname }} | add {{ ansible_user }} to docker group"
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+- name: "{{ inventory_hostname }} | create base directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+  loop:
+    - "{{ docker_traefik_base_dir }}"
+    - "{{ docker_nginx_base_dir }}"
+
+#- name: "{{ inventory_hostname }} | copy traefik configuration file"
+#  ansible.builtin.template:
+#    src: "traefik-configuration.yml.j2"
+#    dest: "{{ docker_traefik_base_dir }}/traefik.yml"
+#    owner: "{{ ansible_user }}" 
+#    group: "{{ ansible_user }}" 
+#    mode: '0755'
+
+- name: "{{ inventory_hostname }} | create traefik letsencrypt directory"
+  ansible.builtin.file:
+    path: "{{ docker_traefik_base_dir }}/letsencrypt"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy nginx index file"
+  ansible.builtin.template:
+    src: "nginx_index.html.j2"
+    dest: "{{ docker_nginx_base_dir }}/index.html"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy docker compose file"
+  ansible.builtin.template:
+    src: "server-docker-compose.yml.j2"
+    dest: "{{ docker_base_dir }}/docker-compose.yml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+  #notify: restart docker container
+
+- name: "{{ inventory_hostname }} | copy .env file"
+  ansible.builtin.template:
+    src: ".env"
+    dest: "{{ docker_base_dir }}/.env"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'

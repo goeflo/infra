@@ -1,0 +1,19 @@
+acl internal {
+    192.168.0.0/16;
+    127.0.0.0/16;
+    172.18.0.0/16;
+};
+
+options {
+    forwarders {
+        {{ dns_forwarders }} ;
+    };
+    allow-query { 
+        internal; 
+    };
+};
+
+zone "{{ dns_domain }}" IN {
+    type primary;
+    file "/etc/bind/bensemer-name.zone";
+};

@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        volumes:
+            - "./{{ nginx_base_dir }}:/usr/share/nginx/html"
+        restart: unless-stopped
+        networks:
+            - traefik
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nginx.rule=Host(`salamix.bensemer.name`)"
+            - "traefik.http.routers.nginx.entrypoints=web"
+            - "traefik.http.routers.nginx-https.rule=Host(`salamix.bensemer.name`)"
+            - "traefik.http.routers.nginx-https.tls=true"
+            - "traefik.http.routers.nginx-https.tls.certresolver=myresolver"
+            - "traefik.http.routers.nginx-https.tls.domains[0].main=bensemer.name"
+            - "traefik.http.routers.nginx-https.tls.domains[0].sans=*.bensemer.name"
+            - "traefik.http.routers.nginx-https.entrypoints=websecure"
+
+    traefik:
+        image: "traefik:latest"
+        container_name: traefik
+        command:
+            - "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.network=internal"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entryPoints.web.address=:80"
+            - "--entryPoints.websecure.address=:443"
+            - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+            - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=hetzner"
+            - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=193.47.99.4:53,213.133.100.102:53"
+            - "--certificatesresolvers.myresolver.acme.email={{ email }}"
+            - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+        ports:
+            - "80:80"
+            - "443:443"
+            - "8080:8080"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "./{{ traefik_base_dir }}/letsencrypt:/letsencrypt"
+        environment:
+            - HETZNER_API_KEY=${HETZNER_API_KEY}
+        networks:
+            - traefik
+        restart: always
+
+networks:
+    traefik:
+        name: internal_docker

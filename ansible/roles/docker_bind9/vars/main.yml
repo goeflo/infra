@@ -1,0 +1,16 @@
+---
+# roles/docker_bind9/vars/main.yml
+
+bind9_base_dir: bind9
+docker_compose_file_name: docker-compose.yml
+named_conf_file_name: named.conf
+forward_zone_file_name: bensemer-name.zone
+dns_domain: bensemer.name
+dns_forwarders: 1.0.0.3
+
+# additional debian packages
+debian_packages:
+  - curl
+  - docker.io
+  - docker-compose
+  - bind9-dnsutils # not the bind9 installation, bind9 is used in the docker container

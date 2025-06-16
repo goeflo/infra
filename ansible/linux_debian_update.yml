@@ -1,0 +1,27 @@
+---
+
+- name: update and upgrade debian
+  hosts: debian
+  become: yes
+
+  tasks:
+    - name:  "{{ inventory_hostname }} update apt cache"
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: "{{ inventory_hostname }} upgrade all packages"
+      ansible.builtin.apt:
+        upgrade: dist
+        autoclean: yes
+        autoremove: yes
+
+    - name: "{{ inventory_hostname }} check reboot required"
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reboot_required
+
+    - name: "{{ inventory_hostname }} reboot if required"
+      ansible.builtin.reboot:
+        reboot_timeout: 600 # wait 10 minutes
+      when: reboot_required.stat.exists
