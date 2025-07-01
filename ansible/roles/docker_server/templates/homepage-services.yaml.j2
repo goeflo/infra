@@ -1,0 +1,57 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- proxmox:
+    - talentix:
+        icon: proxmox.png
+        href: https://192.168.2.35:8006
+        ping: https://192.168.2.35
+        widget:
+            type: proxmox
+            url: https://192.168.2.35:8006
+            username: api@pam!homepage
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
+            node: talentix 
+    - magnix:
+        icon: proxmox.png
+        href: https://192.168.2.20:8006
+        ping: https://192.168.2.20
+        widget:
+            type: proxmox
+            url: https://192.168.2.20:8006
+            username: api@pam!homepage
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
+            node: magnix 
+    - tick:
+        icon: proxmox.png
+        href: https://192.168.2.31:8006
+        ping: https://192.168.2.31
+        widget:
+            type: proxmox
+            url: https://192.168.2.31:8006
+            username: api@pam!homepage
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
+            node: tick 
+
+- network:
+    - traefik:
+        icon: traefik.png
+        href: http://{{ inventory_hostname }}.{{ dns_domain }}:8080
+        description: reverse proxy
+        container: traefik
+        widget:
+            type: traefik
+            url: http://{{ inventory_hostname }}.{{ dns_domain }}:8080
+    - DNS:
+        icon: mdi-dns
+        href: http://192.168.2.6
+        ping: http://192.168.2.6
+    - switch:
+        icon: mdi-network
+        href: http://192.168.2.2
+        ping: http://192.168.2.2
+    - router:
+        icon: mdi-router-network-wireless
+        href: http://192.168.2.1
+        ping: http://192.168.2.1

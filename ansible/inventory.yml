@@ -1,4 +1,7 @@
 all:
+  vars:
+    dns_domain: bensemer.name
+    
   children:
     dns_server:
       hosts:

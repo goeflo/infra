@@ -4,8 +4,7 @@
 bind9_base_dir: bind9
 docker_compose_file_name: docker-compose.yml
 named_conf_file_name: named.conf
-forward_zone_file_name: bensemer-name.zone
-dns_domain: bensemer.name
+forward_bensemer_zone_file_name: bensemer-name.zone
 dns_forwarders: 1.0.0.3
 
 # additional debian packages

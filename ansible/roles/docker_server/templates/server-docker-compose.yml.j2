@@ -31,6 +31,7 @@ services:
             - "--providers.docker.exposedbydefault=false"
             - "--entryPoints.web.address=:80"
             - "--entryPoints.websecure.address=:443"
+            - "--entrypoints.websecure.http.tls.certresolver=myresolver"
             - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
             - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=hetzner"
             - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=193.47.99.4:53,213.133.100.102:53"
@@ -46,9 +47,81 @@ services:
         environment:
             - HETZNER_API_KEY=${HETZNER_API_KEY}
         networks:
-            - traefik
+            - traefik            
         restart: always
 
+    homepage:
+        image: ghcr.io/gethomepage/homepage:latest
+        container_name: homepage
+        volumes:
+            - ./homepage:/app/config
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - traefik
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.homepage.rule=Host(`homepage.bensemer.name`)"
+            - "traefik.http.routers.homepage.tls=true"
+            - "traefik.http.routers.homepage.tls.certresolver=myresolver"
+            - "traefik.http.routers.homepage.tls.domains[0].main=bensemer.name"
+            - "traefik.http.routers.homepage.tls.domains[0].sans=*.bensemer.name"
+            - "traefik.http.routers.homepage.entrypoints=websecure"
+
+        environment:
+            HOMEPAGE_ALLOWED_HOSTS: homepage.bensemer.name
+            
+    forgejo:
+        image: codeberg.org/forgejo/forgejo:11 
+        container_name: forgejo
+        environment:
+            - USER_UID=1000
+            - USER_GID=1000
+#            - FORGEJO__database__DB_TYPE=mysql
+#            - FORGEJO__database__HOST=forgejodb:3306
+#            - FORGEJO__database__NAME=forgejo
+#            - FORGEJO__database__USER=forgejo
+#            - FORGEJO__database__PASSWD=forgejo
+        restart: always
+#        depends_on:
+#            - forgejodb
+        networks:
+            - traefik
+#            - forgejo
+        volumes:
+            - ./forgejo:/data
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+#        ports:
+#            - "3000:3000"
+#            - "222:22"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.forgejo.rule=Host(`forgejo.bensemer.name`)"
+            - "traefik.http.routers.forgejo.entrypoints=websecure"
+            - "traefik.http.routers.forgejo.tls=true"
+            - "traefik.http.routers.forgejo.tls.certresolver=myresolver"
+            - "traefik.http.routers.forgejo.tls.domains[0].main=bensemer.name"
+            - "traefik.http.routers.forgejo.tls.domains[0].sans=*.bensemer.name"
+            - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
+
+#    forgejodb:
+#        image: mysql:8
+#        container_name: forgejodb
+#        restart: always
+#        environment:
+#            - MYSQL_ROOT_PASSWORD=forgejo
+#            - MYSQL_USER=forgejo
+#            - MYSQL_PASSWORD=forgejo
+#            - MYSQL_DATABASE=forgejo
+#        networks:
+#            - forgejo
+#        volumes:
+#            - ./mysql:/var/lib/mysql
+
+
 networks:
+#    forgejo:
+#        name: forgejo
     traefik:
-        name: internal_docker
+        name: traefik
