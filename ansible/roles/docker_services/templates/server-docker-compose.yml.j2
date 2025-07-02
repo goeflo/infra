@@ -16,8 +16,8 @@ services:
             - "traefik.http.routers.nginx-https.rule=Host(`salamix.bensemer.name`)"
             - "traefik.http.routers.nginx-https.tls=true"
             - "traefik.http.routers.nginx-https.tls.certresolver=myresolver"
-            - "traefik.http.routers.nginx-https.tls.domains[0].main=bensemer.name"
-            - "traefik.http.routers.nginx-https.tls.domains[0].sans=*.bensemer.name"
+#            - "traefik.http.routers.nginx-https.tls.domains[0].main=bensemer.name"
+#            - "traefik.http.routers.nginx-https.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.routers.nginx-https.entrypoints=websecure"
 
     traefik:
@@ -64,8 +64,8 @@ services:
             - "traefik.http.routers.homepage.rule=Host(`homepage.bensemer.name`)"
             - "traefik.http.routers.homepage.tls=true"
             - "traefik.http.routers.homepage.tls.certresolver=myresolver"
-            - "traefik.http.routers.homepage.tls.domains[0].main=bensemer.name"
-            - "traefik.http.routers.homepage.tls.domains[0].sans=*.bensemer.name"
+#            - "traefik.http.routers.homepage.tls.domains[0].main=bensemer.name"
+#            - "traefik.http.routers.homepage.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.routers.homepage.entrypoints=websecure"
 
         environment:
@@ -101,8 +101,8 @@ services:
             - "traefik.http.routers.forgejo.entrypoints=websecure"
             - "traefik.http.routers.forgejo.tls=true"
             - "traefik.http.routers.forgejo.tls.certresolver=myresolver"
-            - "traefik.http.routers.forgejo.tls.domains[0].main=bensemer.name"
-            - "traefik.http.routers.forgejo.tls.domains[0].sans=*.bensemer.name"
+#            - "traefik.http.routers.forgejo.tls.domains[0].main=bensemer.name"
+#            - "traefik.http.routers.forgejo.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
 
 #    forgejodb:

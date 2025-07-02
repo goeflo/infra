@@ -1,0 +1,67 @@
+- name: "{{ inventory_hostname }} | update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: "{{ inventory_hostname }} | install debian packages"
+  ansible.builtin.apt:
+    pkg: "{{ debian_packages }}"
+    state: present
+
+#- name: "{{ inventory_hostname }} | copy ansible .env file"
+#  ansible.builtin.template:
+#    src: ".env"
+#    dest: "{{ docker_base_dir }}/.env"
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#    mode: '0644'
+
+- name: "{{ inventory_hostname }} | copy cifs credentials file"
+  ansible.builtin.template:
+    src: "templates/cifs-credentials.j2"
+    dest: "/root/cifs-credentials"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: "{{ inventory_hostname }} | create mount directory"
+  ansible.builtin.file:
+    path: "/mnt/data"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | mount smb share"
+  mount:
+    state: "mounted"
+    fstype: "cifs"
+    name: "/mnt/data"
+    src: "{{ smb_share }}"
+    opts: "credentials=/root/cifs-credentials,uid=3000,gid=3000,noperm"
+
+- name: "{{ inventory_hostname }} | create base directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+  loop:
+    - "{{ docker_immmich_base_dir }}"
+
+- name: "{{ inventory_hostname }} | copy immich docker compose file"
+  ansible.builtin.template:
+    src: "immich-docker-compose.yml.j2"
+    dest: "{{ docker_base_dir }}/docker-compose.yml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: "{{ inventory_hostname }} | copy immich .env file"
+  ansible.builtin.template:
+    src: "immich_env.j2"
+    dest: "{{ docker_base_dir }}/.env"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'

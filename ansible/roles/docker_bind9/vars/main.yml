@@ -6,8 +6,10 @@ docker_compose_file_name: docker-compose.yml
 named_conf_file_name: named.conf
 forward_bensemer_zone_file_name: bensemer-name.zone
 dns_forwarders: 
-  - ip: 1.0.0.3
+  - ip: 86.54.11.13
+  - ip: 86.54.11.213
   - ip: 1.1.1.3
+  - ip: 1.0.0.3
 
 # additional debian packages
 debian_packages:

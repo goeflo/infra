@@ -1,0 +1,9 @@
+---
+
+- name: install docker services
+
+  hosts: 
+    - docker_server
+  become: yes
+  roles:
+    - docker_services

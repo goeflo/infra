@@ -11,7 +11,7 @@
             type: proxmox
             url: https://192.168.2.35:8006
             username: api@pam!homepage
-            password: ${PROXMOX_API_PASSWORD}
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
             node: talentix 
     - magnix:
         icon: proxmox.png
@@ -21,7 +21,7 @@
             type: proxmox
             url: https://192.168.2.20:8006
             username: api@pam!homepage
-            password: ${PROXMOX_API_PASSWORD}
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
             node: magnix 
     - tick:
         icon: proxmox.png
@@ -31,7 +31,7 @@
             type: proxmox
             url: https://192.168.2.31:8006
             username: api@pam!homepage
-            password: ${PROXMOX_API_PASSWORD}
+            password: 976b3042-fdfb-4066-b98e-27f3f63a62bf
             node: tick 
 
 - network:
@@ -66,3 +66,13 @@
             type: gitea
             url: https://forgejo.{{ dns_domain }}
             key: d33c104bde53caddc21da6ed0f8f3906f0a630b1
+    - immich:
+        icon: immich.png
+        href: http://192.168.2.202:2283
+        description: image hosting
+        ping: http://192.168.2.202:2283
+        widget:
+            type: immich
+            url: http://192.168.2.202
+            key: Ad2jE2GjWqtWxOsQMttdRObR9Qo7wc53cD5EVb4IvE4
+            version: 2

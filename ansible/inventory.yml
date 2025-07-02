@@ -1,7 +1,9 @@
 all:
   vars:
     dns_domain: bensemer.name
-    
+    docker_base_dir: "docker"
+    email: "florian@goeldenitz.org"
+
   children:
     dns_server:
       hosts:
@@ -14,6 +16,12 @@ all:
         salamix:
           ansible_user: florian
           ansible_host: 192.168.2.201
+
+    immich_server:
+      hosts:
+        immich:
+          ansible_user: florian
+          ansible_host: 192.168.2.202
 
     debian:
       children:
