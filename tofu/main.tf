@@ -43,6 +43,21 @@ locals {
             initialization_username = "florian"
             initialization_user_keys = [file("~/.ssh/id_rsa.pub")]
         }
+        "immich" = {
+            vm_id = 202
+            node_name = "magnix"
+            tags = ["debian", "opentofu", "immich"]
+            description = "debian docker server"
+            ipv4_address = "192.168.2.202/24"
+            dns_servers = ["192.168.2.6"]
+            cpu_cores = 2
+            disk_size = 10
+            memory_dedicated = 4096
+            memory_floating = 4096
+            clone_id = 9000
+            initialization_username = "florian"
+            initialization_user_keys = [file("~/.ssh/id_rsa.pub")]
+        }
     }  
 }
 

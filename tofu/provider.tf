@@ -6,20 +6,20 @@ terraform {
         source = "bpg/proxmox"
         version = "~> 0.78"
     }
-    pihole = {
-        source = "iolave/pihole"
-    }
+#    pihole = {
+#        source = "iolave/pihole"
+#    }
   }
 }
 
-variable "pihole_url" {
-    type = string
-}
+#variable "pihole_url" {
+#    type = string
+#}
 
-variable "pihole_password" {
-    type = string
-    sensitive = true
-}
+#variable "pihole_password" {
+#    type = string
+#    sensitive = true
+#}
 
 variable "proxmox_url" { 
     type = string
@@ -40,7 +40,7 @@ provider "proxmox" {
     }
 }
 
-provider "pihole" {
-    url = var.pihole_url
-    password = var.pihole_password
-}
+#provider "pihole" {
+#    url = var.pihole_url
+#    password = var.pihole_password
+#}
