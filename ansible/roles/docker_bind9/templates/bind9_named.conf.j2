@@ -6,7 +6,9 @@ acl internal {
 
 options {
     forwarders {
-        {{ dns_forwarders }} ;
+{% for item in dns_forwarders %}
+        {{ item.ip }};
+{% endfor %}
     };
     allow-query { 
         internal; 

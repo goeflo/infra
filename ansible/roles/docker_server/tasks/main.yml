@@ -88,7 +88,7 @@
     - src: "templates/homepage-settings.yaml.j2"
       dest: "{{ docker_homepage_base_dir }}/settings.yaml"
 
-- name: "{{ inventory_hostname }} | start docker container"
-  community.docker.docker_compose:
-    project_src: "{{ docker_base_dir }}"
-    state: present 
+#- name: "{{ inventory_hostname }} | start docker container"
+#  community.docker.docker_compose:
+#    project_src: "{{ docker_base_dir }}"
+#    state: present 
