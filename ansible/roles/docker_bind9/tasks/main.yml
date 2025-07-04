@@ -60,6 +60,7 @@
   loop:
     - { src: bind9_named.conf.j2, dest: "{{ named_conf_file_name }}" }
     - { src: bensemer-name.zone.j2, dest: "{{ forward_bensemer_zone_file_name }}" }
+    - { src: thinkingface-dev.zone.j2, dest: "{{ forward_thinkingface_zone_file_name }}" }
   notify: start or restart docker bind9 container
 
 #- name: "{{ inventory_hostname }} | ensure docker bind9 service is up"

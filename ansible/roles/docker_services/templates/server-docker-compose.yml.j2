@@ -16,27 +16,21 @@ services:
             - "traefik.http.routers.nginx-https.rule=Host(`salamix.bensemer.name`)"
             - "traefik.http.routers.nginx-https.tls=true"
             - "traefik.http.routers.nginx-https.tls.certresolver=myresolver"
-#            - "traefik.http.routers.nginx-https.tls.domains[0].main=bensemer.name"
-#            - "traefik.http.routers.nginx-https.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.routers.nginx-https.entrypoints=websecure"
 
     traefik:
         image: "traefik:latest"
         container_name: traefik
-        command:
-            - "--log.level=DEBUG"
-            - "--api.insecure=true"
-            - "--providers.docker=true"
-            - "--providers.docker.network=internal"
-            - "--providers.docker.exposedbydefault=false"
-            - "--entryPoints.web.address=:80"
-            - "--entryPoints.websecure.address=:443"
-            - "--entrypoints.websecure.http.tls.certresolver=myresolver"
-            - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-            - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=hetzner"
-            - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=193.47.99.4:53,213.133.100.102:53"
-            - "--certificatesresolvers.myresolver.acme.email={{ email }}"
-            - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+#        labels:
+#            - "traefik.http.routers.immich.entrypoints=websecure"
+#            - "traefik.http.routers.immich.tls=true"
+#            - "traefik.http.routers.immich.tls.certresolver=myresolver"
+#            - "traefik.http.routers.immich.rule=Host(`photos.bensemer.name`)"
+#            - "traefik.http.services.immich.loadbalancer.servers.0.url=http://192.168.2.202:2283"
+            #- "traefik.http.routers.immich.service=immich-external"
+            #- "traefik.http.services.immich-external.loadbalancer.servers.0.url=http://192.168.2.202:2283"
+
         ports:
             - "80:80"
             - "443:443"
@@ -44,6 +38,8 @@ services:
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
             - "./{{ traefik_base_dir }}/letsencrypt:/letsencrypt"
+            - "./{{ traefik_base_dir }}/config/dynamic.yml:/etc/traefik/dynamic.yml:ro"
+            - "./{{ traefik_base_dir }}/config/traefik.yml:/etc/traefik/traefik.yml:ro"
         environment:
             - HETZNER_API_KEY=${HETZNER_API_KEY}
         networks:
@@ -64,8 +60,6 @@ services:
             - "traefik.http.routers.homepage.rule=Host(`homepage.bensemer.name`)"
             - "traefik.http.routers.homepage.tls=true"
             - "traefik.http.routers.homepage.tls.certresolver=myresolver"
-#            - "traefik.http.routers.homepage.tls.domains[0].main=bensemer.name"
-#            - "traefik.http.routers.homepage.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.routers.homepage.entrypoints=websecure"
 
         environment:
@@ -101,23 +95,7 @@ services:
             - "traefik.http.routers.forgejo.entrypoints=websecure"
             - "traefik.http.routers.forgejo.tls=true"
             - "traefik.http.routers.forgejo.tls.certresolver=myresolver"
-#            - "traefik.http.routers.forgejo.tls.domains[0].main=bensemer.name"
-#            - "traefik.http.routers.forgejo.tls.domains[0].sans=*.bensemer.name"
             - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
-
-#    forgejodb:
-#        image: mysql:8
-#        container_name: forgejodb
-#        restart: always
-#        environment:
-#            - MYSQL_ROOT_PASSWORD=forgejo
-#            - MYSQL_USER=forgejo
-#            - MYSQL_PASSWORD=forgejo
-#            - MYSQL_DATABASE=forgejo
-#        networks:
-#            - forgejo
-#        volumes:
-#            - ./mysql:/var/lib/mysql
 
 
 networks:

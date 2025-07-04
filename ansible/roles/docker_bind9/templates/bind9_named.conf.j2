@@ -15,7 +15,7 @@ options {
     };
 };
 
-zone "{{ dns_domain }}" IN {
+zone "bensemer.name" IN {
     type primary;
     file "/etc/bind/{{ forward_bensemer_zone_file_name }}";
 };

@@ -22,6 +22,30 @@
     group: "{{ ansible_user }}" 
     mode: '0755'
 
+- name: "{{ inventory_hostname }} | create traefik config directory"
+  ansible.builtin.file:
+    path: "{{ docker_traefik_base_dir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy traefik config file"
+  ansible.builtin.template:
+    src: "traefik.yml.j2"
+    dest: "{{ docker_traefik_base_dir }}/config/traefik.yml"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy traefik dynamic config file"
+  ansible.builtin.template:
+    src: "dynamic.yml.j2"
+    dest: "{{ docker_traefik_base_dir }}/config/dynamic.yml"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
 - name: "{{ inventory_hostname }} | copy nginx index file"
   ansible.builtin.template:
     src: "nginx_index.html.j2"
@@ -63,7 +87,7 @@
     - src: "templates/homepage-settings.yaml.j2"
       dest: "{{ docker_homepage_base_dir }}/settings.yaml"
 
-#- name: "{{ inventory_hostname }} | start docker container"
-#  community.docker.docker_compose:
-#    project_src: "{{ docker_base_dir }}"
-#    state: present 
+- name: "{{ inventory_hostname }} | start docker container"
+  community.docker.docker_compose:
+    project_src: "{{ docker_base_dir }}"
+    state: present 

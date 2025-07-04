@@ -1,7 +1,7 @@
 $TTL 2d
-$ORIGIN bensemer.name.
+$ORIGIN thinkingface.dev.
 
-@               IN      SOA     dns-01.bensemer.name.  info.bensemer.name. (
+@               IN      SOA     dns-01.thinkingface.dev.  info.thinkingface.dev. (
                                 {{ ansible_date_time.epoch }}  ; serial updated by ansible
                                 12h         ; refresh
                                 15m         ; retry
@@ -9,7 +9,7 @@ $ORIGIN bensemer.name.
                                 2h          ; minimum ttl
                                 )
 
-                IN      NS      dns-01.bensemer.name.
+                IN      NS      dns-01.thinkingface.dev.
 
 majestix        IN      A       192.168.2.1
 tpswitch        IN      A       192.168.2.2

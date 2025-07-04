@@ -1,0 +1,19 @@
+http:
+    routers:
+        traefik:
+            rule: "Host(`immich.bensemer.name`)"
+            middlewares:
+                - addHost
+            service: forward
+
+    middlewares:
+        addHost:
+            headers:
+                customRequestsHeaders:
+                    Host: http://192.168.2.202:2283
+                    
+    services:
+        forward:
+            loadBalancer:
+                servers:
+                    - url: http://192.168.2.202:2283
