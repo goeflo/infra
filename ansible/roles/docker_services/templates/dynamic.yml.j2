@@ -1,19 +1,16 @@
 http:
     routers:
-        traefik:
-            rule: "Host(`immich.bensemer.name`)"
-            middlewares:
-                - addHost
-            service: forward
+        immich:
+            rule: "Host(`photos.bensemer.name`)"
+            service: immich
+            entrypoints:
+                - websecure
+            tls:
+                certResolver: myresolver
 
-    middlewares:
-        addHost:
-            headers:
-                customRequestsHeaders:
-                    Host: http://192.168.2.202:2283
-                    
+
     services:
-        forward:
+        immich:
             loadBalancer:
                 servers:
                     - url: http://192.168.2.202:2283

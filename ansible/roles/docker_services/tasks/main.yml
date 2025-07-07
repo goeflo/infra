@@ -41,7 +41,7 @@
 - name: "{{ inventory_hostname }} | copy traefik dynamic config file"
   ansible.builtin.template:
     src: "dynamic.yml.j2"
-    dest: "{{ docker_traefik_base_dir }}/config/dynamic.yml"
+    dest: "{{ docker_traefik_base_dir }}/config/config.yml"
     owner: "{{ ansible_user }}" 
     group: "{{ ansible_user }}" 
     mode: '0755'

@@ -38,7 +38,7 @@ services:
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
             - "./{{ traefik_base_dir }}/letsencrypt:/letsencrypt"
-            - "./{{ traefik_base_dir }}/config/dynamic.yml:/etc/traefik/dynamic.yml:ro"
+            - "./{{ traefik_base_dir }}/config/config.yml:/etc/traefik/config.yml:ro"
             - "./{{ traefik_base_dir }}/config/traefik.yml:/etc/traefik/traefik.yml:ro"
         environment:
             - HETZNER_API_KEY=${HETZNER_API_KEY}
