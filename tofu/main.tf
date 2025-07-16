@@ -9,7 +9,7 @@ locals {
         disk_interface = "scsi0"
         network_bridge = "vmbr0"
         ipv4_gateway = "192.168.2.1"
-        dns_domain = "bensemer.name"
+        dns_domain = "home.bensemer.name"
     }
 
     vms = {
@@ -45,9 +45,9 @@ locals {
         }
         "immich" = {
             vm_id = 202
-            node_name = "magnix"
+            node_name = "talentix"
             tags = ["debian", "opentofu", "immich"]
-            description = "debian docker server"
+            description = "immich server"
             ipv4_address = "192.168.2.202/24"
             dns_servers = ["192.168.2.6"]
             cpu_cores = 2

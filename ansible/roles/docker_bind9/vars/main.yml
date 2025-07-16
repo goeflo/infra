@@ -5,7 +5,7 @@ bind9_base_dir: bind9
 docker_compose_file_name: docker-compose.yml
 named_conf_file_name: named.conf
 forward_bensemer_zone_file_name: bensemer-name.zone
-forward_thinkingface_zone_file_name: thinkingface-dev.zone
+forward_peekingface_zone_file_name: peekingface-eu.zone
 
 dns_forwarders: 
   - ip: 86.54.11.13

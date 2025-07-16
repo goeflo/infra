@@ -9,6 +9,16 @@
 
 
 services:
+
+  newt:
+    image: fosrl/newt
+    container_name: newt
+    restart: unless-stopped
+    environment:
+      - PANGOLIN_ENDPOINT=https://pangolin.bensemer.name
+      - NEWT_ID=mmctoow9mgbdh53
+      - NEWT_SECRET=406zr7nzskoej2pyaem3lr0vjuxh187vd6i4xkfbkxe7symk
+
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}

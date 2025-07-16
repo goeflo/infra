@@ -2,9 +2,9 @@
 
 immich_base_dir: "immich"
 docker_immmich_base_dir: "{{ docker_base_dir }}/{{ immich_base_dir }}"
-immich_upload_dir: "./{{ immich_base_dir }}/library"
+immich_upload_dir: "/mnt/data"
 
-smb_share: "//192.168.2.11/data"
+smb_share: "//192.168.2.11/immich"
 
 # additional debian packages
 debian_packages:

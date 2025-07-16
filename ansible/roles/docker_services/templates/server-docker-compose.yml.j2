@@ -11,9 +11,9 @@ services:
             - traefik
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.nginx.rule=Host(`salamix.bensemer.name`)"
+            - "traefik.http.routers.nginx.rule=Host(`salamix.home.bensemer.name`)"
             - "traefik.http.routers.nginx.entrypoints=web"
-            - "traefik.http.routers.nginx-https.rule=Host(`salamix.bensemer.name`)"
+            - "traefik.http.routers.nginx-https.rule=Host(`salamix.home.bensemer.name`)"
             - "traefik.http.routers.nginx-https.tls=true"
             - "traefik.http.routers.nginx-https.tls.certresolver=myresolver"
             - "traefik.http.routers.nginx-https.entrypoints=websecure"
@@ -21,16 +21,6 @@ services:
     traefik:
         image: "traefik:latest"
         container_name: traefik
-
-#        labels:
-#            - "traefik.http.routers.immich.entrypoints=websecure"
-#            - "traefik.http.routers.immich.tls=true"
-#            - "traefik.http.routers.immich.tls.certresolver=myresolver"
-#            - "traefik.http.routers.immich.rule=Host(`photos.bensemer.name`)"
-#            - "traefik.http.services.immich.loadbalancer.servers.0.url=http://192.168.2.202:2283"
-            #- "traefik.http.routers.immich.service=immich-external"
-            #- "traefik.http.services.immich-external.loadbalancer.servers.0.url=http://192.168.2.202:2283"
-
         ports:
             - "80:80"
             - "443:443"
@@ -57,13 +47,13 @@ services:
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.homepage.rule=Host(`homepage.bensemer.name`)"
+            - "traefik.http.routers.homepage.rule=Host(`homepage.home.bensemer.name`)"
             - "traefik.http.routers.homepage.tls=true"
             - "traefik.http.routers.homepage.tls.certresolver=myresolver"
             - "traefik.http.routers.homepage.entrypoints=websecure"
 
         environment:
-            HOMEPAGE_ALLOWED_HOSTS: homepage.bensemer.name
+            HOMEPAGE_ALLOWED_HOSTS: homepage.home.bensemer.name
             
     forgejo:
         image: codeberg.org/forgejo/forgejo:11 
@@ -71,35 +61,39 @@ services:
         environment:
             - USER_UID=1000
             - USER_GID=1000
-#            - FORGEJO__database__DB_TYPE=mysql
-#            - FORGEJO__database__HOST=forgejodb:3306
-#            - FORGEJO__database__NAME=forgejo
-#            - FORGEJO__database__USER=forgejo
-#            - FORGEJO__database__PASSWD=forgejo
         restart: always
-#        depends_on:
-#            - forgejodb
         networks:
             - traefik
-#            - forgejo
         volumes:
             - ./forgejo:/data
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro
-#        ports:
-#            - "3000:3000"
-#            - "222:22"
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.forgejo.rule=Host(`forgejo.bensemer.name`)"
+            - "traefik.http.routers.forgejo.rule=Host(`forgejo.home.bensemer.name`)"
             - "traefik.http.routers.forgejo.entrypoints=websecure"
             - "traefik.http.routers.forgejo.tls=true"
             - "traefik.http.routers.forgejo.tls.certresolver=myresolver"
             - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
 
+#    newt:
+#        image: fosrl/newt
+#        container_name: newt
+#        restart: unless-stopped
+#        environment:
+#            - PANGOLIN_ENDPOINT=https://pangolin.bensemer.name
+#            - NEWT_ID=7ep6qjwfpknsn8l
+#            - NEWT_SECRET=xsasel8jvuxozcsyk9oninhzwzz1mi7i41aq6kiqenulfcri
+#        networks:
+#        - traefik
 
 networks:
-#    forgejo:
-#        name: forgejo
+  backend:
+    external: true
+
+
+
+
+networks:
     traefik:
         name: traefik

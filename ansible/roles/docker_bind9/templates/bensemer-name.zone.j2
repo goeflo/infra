@@ -1,7 +1,7 @@
 $TTL 2d
-$ORIGIN bensemer.name.
+$ORIGIN home.bensemer.name.
 
-@               IN      SOA     dns-01.bensemer.name.  info.bensemer.name. (
+@               IN      SOA     dns-01.home.bensemer.name.  info.home.bensemer.name. (
                                 {{ ansible_date_time.epoch }}  ; serial updated by ansible
                                 12h         ; refresh
                                 15m         ; retry
@@ -9,7 +9,7 @@ $ORIGIN bensemer.name.
                                 2h          ; minimum ttl
                                 )
 
-                IN      NS      dns-01.bensemer.name.
+                IN      NS      dns-01.home.bensemer.name.
 
 majestix        IN      A       192.168.2.1
 tpswitch        IN      A       192.168.2.2
@@ -22,13 +22,11 @@ grobianix       IN      A       192.168.2.26
 tick            IN      A       192.168.2.31
 talentix        IN      A       192.168.2.35
 haos            IN      A       192.168.2.41
-numerobis       IN      A       102.168.2.42
+numerobis       IN      A       192.168.2.42
 
 salamix         IN       A      192.168.2.201
-*.salamix       IN       A      192.168.2.201
-
 homepage        IN       A      192.168.2.201
 forgejo         IN       A      192.168.2.201
+photos          IN       A      192.168.2.201
 
 immich          IN       A      192.168.2.202
-*.immich        IN       A      192.168.2.202

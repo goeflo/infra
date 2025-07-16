@@ -35,7 +35,7 @@
   mount:
     state: "mounted"
     fstype: "cifs"
-    name: "/mnt/data"
+    name: "{{ immich_upload_dir }}"
     src: "{{ smb_share }}"
     opts: "credentials=/root/cifs-credentials,uid=3000,gid=3000,noperm"
 

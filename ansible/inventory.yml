@@ -1,6 +1,6 @@
 all:
   vars:
-    dns_domain: bensemer.name
+    dns_domain: home.bensemer.name
     docker_base_dir: "docker"
     email: "florian@goeldenitz.org"
 
