@@ -1,120 +1,40 @@
 # main.tf 
 
-locals {
-    common_vm_config = {
-        stop_on_destroy = true
-        agent_enabled = false
-        cpu_type = "x86-64-v2-AES"
-        disk_storage_id = "local-zfs"
-        disk_interface = "scsi0"
-        network_bridge = "vmbr0"
-        ipv4_gateway = "192.168.2.1"
-        dns_domain = "home.bensemer.name"
-    }
-
-    vms = {
-        "dns-01" = {
-            vm_id = 200
-            node_name = "magnix"
-            tags = ["debian", "opentofu", "dns"]
-            description = "dns server"
-            ipv4_address = "192.168.2.6/24"
-            dns_servers = ["192.168.2.6"]
-            cpu_cores = 1
-            disk_size = 3
-            memory_dedicated = 2048
-            memory_floating = 2048
-            clone_id = 9000
-            initialization_username = "florian"
-            initialization_user_keys = [file("~/.ssh/id_rsa.pub")]
-        }
-        "salamix" = {
-            vm_id = 201
-            node_name = "magnix"
-            tags = ["debian", "opentofu", "docker"]
-            description = "debian docker server"
-            ipv4_address = "192.168.2.201/24"
-            dns_servers = ["192.168.2.6"]
-            cpu_cores = 2
-            disk_size = 10
-            memory_dedicated = 4096
-            memory_floating = 4096
-            clone_id = 9000
-            initialization_username = "florian"
-            initialization_user_keys = [file("~/.ssh/id_rsa.pub")]
-        }
-        "immich" = {
-            vm_id = 202
-            node_name = "talentix"
-            tags = ["debian", "opentofu", "immich"]
-            description = "immich server"
-            ipv4_address = "192.168.2.202/24"
-            dns_servers = ["192.168.2.6"]
-            cpu_cores = 2
-            disk_size = 10
-            memory_dedicated = 4096
-            memory_floating = 4096
-            clone_id = 9000
-            initialization_username = "florian"
-            initialization_user_keys = [file("~/.ssh/id_rsa.pub")]
-        }
-    }  
+module "debian_template" {
+    source = "./modules/vm_template"
+    proxmox_node = var.default_proxmox_node
+    vm_storage = var.default_vm_storage
+    iso_storage = var.default_iso_storage
+    zfs_storage = var.default_zfs_storage
+    cloud_image_url = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+    image_file_name = "debian-12-genericcloud-amd64.qcow2"
+    vm_template_name = "debian-12-cloud-template"
+    vm_template_id = 9001
+    vm_user = var.default_vm_user
+    ssh_password = var.proxmox_ssh_password
+    ssh_username = var.proxmox_ssh_username
 }
 
-resource "proxmox_virtual_environment_vm" "vms" {
+module "dns_server" {
+    source = "./modules/vm_provisioning"
+    proxmox_node = var.default_proxmox_node
+    vm_storage = var.default_vm_storage
 
-    for_each = local.vms
+    # depency checking via template id
+    source_template_id = module.debian_template.vm_id
 
-    name = each.key
-    node_name = each.value.node_name
-    vm_id = each.value.vm_id
-    description = each.value.description
-    tags = each.value.tags
-    stop_on_destroy = local.common_vm_config.stop_on_destroy
-
-    agent {
-      enabled = local.common_vm_config.agent_enabled
-    }
-
-    cpu {
-        cores = 1
-        type = local.common_vm_config.cpu_type
-    }
-
-    memory {
-        dedicated = each.value.memory_dedicated
-        floating = each.value.memory_floating
-    }
-
-    disk {
-        datastore_id = local.common_vm_config.disk_storage_id
-        size = each.value.disk_size
-        interface = local.common_vm_config.disk_interface
-    }
-
-    clone {
-        vm_id = each.value.clone_id
-    }
-
-    network_device {
-        bridge = local.common_vm_config.network_bridge
-    }
-
-    initialization {
-        datastore_id = local.common_vm_config.disk_storage_id
-        ip_config {
-            ipv4 {
-                address = each.value.ipv4_address
-                gateway = local.common_vm_config.ipv4_gateway
-            }
-        }
-        dns {
-            servers = each.value.dns_servers
-            domain = local.common_vm_config.dns_domain
-        }
-        user_account {
-            username = each.value.initialization_username
-            keys = each.value.initialization_user_keys
-        }
-    }
+    vm_name = "dns-01"
+    vm_description = "dns server"
+    tags = ["opentofu", "debian", "dns"]
+    vm_id = 300
+    vm_cores = 1
+    vm_memory = 2048 # 2GB
+    network_bridge = ""
+    ipv4_address = "192.168.2.7/24"
+    dns_servers = ["192.168.2.7"]
+    gateway = "192.168.2.1"
+    dns_domain = "home.bensemer.name"
+    cloud_init_user_data = ""
+    ssh_key = [file("~/.ssh/id_rsa.pub")]
+    vm_user = var.default_vm_user
 }
