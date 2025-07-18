@@ -1,11 +1,14 @@
 ---
-# roles/docker_bind9/vars/main.yml
+# roles/dns_server/vars/main.yml
 
 bind9_base_dir: bind9
 docker_compose_file_name: docker-compose.yml
+
+named_conf_template: named.conf.j2
 named_conf_file_name: named.conf
-forward_bensemer_zone_file_name: bensemer-name.zone
-forward_peekingface_zone_file_name: peekingface-eu.zone
+
+peekingface_zone_template: db.home.peekingface.eu.j2
+peekingface_zone_file: home-peekingface-eu.zone
 
 dns_forwarders: 
   - ip: 86.54.11.13

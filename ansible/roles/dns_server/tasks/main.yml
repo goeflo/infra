@@ -1,0 +1,43 @@
+
+- name: "{{ inventory_hostname }} | disable default DNSStubListener in systemd-resolved"
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    line: DNSStubListener=no
+    create: yes
+    regexp: '^#?DNSStubListener=' 
+  notify: restart systemd
+
+- name: "{{ inventory_hostname }} | create bind9 directories"
+  ansible.builtin.file:
+    path: "{{ bind9_base_dir }}/{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+  loop:
+    - config
+    - cache
+    - records
+
+- name: "{{ inventory_hostname }} | copy bind9 docker compose file"
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ bind9_base_dir }}/{{ docker_compose_file_name }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+  notify: start or restart bind9 container
+
+- name: "{{ inventory_hostname }} | copy bind9 configuration files"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ bind9_base_dir }}/config/{{ item.dest }}"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}"
+    mode: '0644'
+  loop:
+    - { src: "{{ named_conf_template }}", dest: "{{ named_conf_file_name }}" }
+    - { src: "{{ peekingface_zone_template }}" , dest: "{{ peekingface_zone_file }}" }
+  notify: start or restart bind9 container
+

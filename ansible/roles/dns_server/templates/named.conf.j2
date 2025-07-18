@@ -15,7 +15,7 @@ options {
     };
 };
 
-zone "home.bensemer.name" IN {
+zone "{{ domain_name }}" IN {
     type primary;
-    file "/etc/bind/{{ forward_bensemer_zone_file_name }}";
+    file "/etc/bind/{{ peekingface_zone_file }}";
 };

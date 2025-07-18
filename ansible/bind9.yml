@@ -1,7 +1,0 @@
----
-
-- name: configure bind9 DNS server
-  hosts: dns_server
-  become: yes
-  roles:
-    - docker_bind9

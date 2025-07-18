@@ -1,0 +1,26 @@
+# playbooks/upgrade_linux.yml
+
+- name: "upgrade and reboot servers"
+  hosts: "home_servers"
+  become: yes
+
+  tasks:
+
+    - name: "{{ inventory_hostname }} | dist upgrade"
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: yes
+
+    - name: "{{ inventory_hostname }} | check reboot required"
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required_file
+
+    - name: "{{ inventory_hostname }} | reboot server"
+      ansible.builtin.reboot:
+      when: reboot_required_file.stat.exists == true
+
+    - name: "{{ inventory_hostname }} | remove dependencies no longer required"
+      ansible.builtin.apt:
+        autoremove: yes

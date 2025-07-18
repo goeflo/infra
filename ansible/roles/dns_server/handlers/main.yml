@@ -1,10 +1,10 @@
 ---
-- name: start or restart docker bind9 container
+- name: start or restart bind9 container
   community.docker.docker_compose:
     project_src: "{{ bind9_base_dir }}"
     state: present 
 
-- name: restart systemd-resolved
+- name: restart systemd
   ansible.builtin.systemd_service:
     state: restarted
     daemon_reload: true

@@ -1,0 +1,8 @@
+# playbooks/dns_setup.yml
+
+- name: "setup dns server"
+  hosts: "dns_servers"
+  become: yes
+
+  roles:
+    - dns_server

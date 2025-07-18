@@ -1,8 +1,0 @@
----
-# roles/docker_server/vars/main.yml
-
-# additional debian packages
-debian_packages:
-  - curl
-  - docker.io
-  - docker-compose

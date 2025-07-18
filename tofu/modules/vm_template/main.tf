@@ -5,6 +5,7 @@ variable "zfs_storage" { type = string }
 variable "vm_storage" { type = string }
 variable "vm_template_name" { type = string }
 variable "proxmox_node" { type = string }
+variable "dns_domain" { nullable = false }
 variable "iso_storage" { type = string }
 variable "cloud_image_url" { type = string }
 variable "vm_template_id" { type = string }
@@ -58,12 +59,6 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
         dedicated = 2048
     }
 
-#    disk {
-#        datastore_id = var.vm_storage
-#        size = 1 # Placeholder disk
-#        interface = "scsi0"
-#    }
-
     network_device { 
         model = "virtio"
         bridge = "vmbr0" 
@@ -76,7 +71,8 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
     connection {
         type = "ssh"
         user = var.ssh_username
-        host = var.proxmox_node
+        #host = var.proxmox_node + "." + var.dns_domain
+        host = join(".", [var.proxmox_node, var.dns_domain])
         password = var.ssh_password
     }
 

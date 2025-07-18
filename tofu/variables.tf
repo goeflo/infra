@@ -26,33 +26,40 @@ variable "proxmox_ssh_private_key" {
   type        = string
 }
 
+# set some default values
+
 variable "default_proxmox_node" {
   description = "Default Proxmox node name"
-  type        = string
+  type = string
+  default = "magnix"
 }
 
 variable "default_vm_storage" {
   description = "Default storage pool for VM disks"
-  type        = string
+  type = string
+  default = "local-zfs"
 }
 
 variable "default_zfs_storage" {
   description = "Default storage pool for disk images"
-  type        = string
+  type = string
+  default = "local-zfs"
 }
 
 variable "default_iso_storage" {
   description = "Default storage pool for ISOs/templates"
-  type        = string
-}
-
-variable "default_proxmox_node_ssh_ip" {
-  description = "IP address for SSH connection to the Proxmox node (if different from API endpoint hostname/IP)"
-  type        = string
-  default     = "" # Set a default or provide in tfvars
+  type = string
+  default = "nfs"
 }
 
 variable "default_vm_user" {
   description = "Default vm User name"
-  type        = string
+  type = string
+  default = "florian"
+}
+
+variable "default_dns_domain" {
+  description = "global DNS domain suffix"
+  type = string
+  default = "home.peekingface.eu"
 }

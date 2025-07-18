@@ -1,8 +1,0 @@
----
-
-- name: configure immich server
-
-  hosts: immich_server
-  become: yes
-  roles:
-    - immich_server
