@@ -1,0 +1,2 @@
+traefik_base_dir: "traefik"
+docker_traefik_base_dir: "{{ docker_base_dir }}/{{ traefik_base_dir }}"

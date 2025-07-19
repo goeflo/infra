@@ -1,0 +1,2 @@
+homepage_base_dir: "homepage"
+docker_homepage_base_dir: "{{ docker_base_dir }}/{{ homepage_base_dir }}"

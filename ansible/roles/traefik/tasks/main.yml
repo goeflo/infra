@@ -1,0 +1,57 @@
+- name: "{{ inventory_hostname }} | create traefik base directory"
+  ansible.builtin.file:
+    path: "{{ docker_traefik_base_dir }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+
+- name: "{{ inventory_hostname }} | create traefik letsencrypt directory"
+  ansible.builtin.file:
+    path: "{{ docker_traefik_base_dir }}/letsencrypt"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy ansible .env file"
+  ansible.builtin.copy:
+    src: ".env"
+    dest: "{{ docker_traefik_base_dir }}/.env"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: "{{ inventory_hostname }} | copy docker-compose file"
+  ansible.builtin.template:
+    src: "docker-compose.yml.j2"
+    dest: "{{ docker_traefik_base_dir }}/docker-compose.yml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: "{{ inventory_hostname }} | create traefik config directory"
+  ansible.builtin.file:
+    path: "{{ docker_traefik_base_dir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy traefik config file"
+  ansible.builtin.template:
+    src: "traefik.yml.j2"
+    dest: "{{ docker_traefik_base_dir }}/config/traefik.yml"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | copy traefik dynamic config file"
+  ansible.builtin.template:
+    src: "dynamic.yml.j2"
+    dest: "{{ docker_traefik_base_dir }}/config/config.yml"
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+

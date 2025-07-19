@@ -1,0 +1,8 @@
+# playbooks/dns_setup.yml
+
+- name: "setup homepage"
+  hosts: "dockerix"
+  become: yes
+
+  roles:
+    - homepage

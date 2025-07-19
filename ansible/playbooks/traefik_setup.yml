@@ -1,0 +1,8 @@
+# playbooks/dns_setup.yml
+
+- name: "setup traefik reverse proxy"
+  hosts: "dockerix"
+  become: yes
+
+  roles:
+    - traefik

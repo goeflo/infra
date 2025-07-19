@@ -2,6 +2,7 @@
 
 ---
 - import_playbook: dns_setup.yml
+- import_playbook: dhcp_setup.yml
 - import_playbook: upgrade_linux.yml
-- import_playbook: install_packages.yml
+- import_playbook: docker_setup.yml
 

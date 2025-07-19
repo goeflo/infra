@@ -1,0 +1,25 @@
+- name: "{{ inventory_hostname }} | create homepage base directory"
+  ansible.builtin.file:
+    path: "{{ docker_homepage_base_dir }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+
+- name: "{{ inventory_hostname }} | copy homepage config files"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+  loop:
+    - src: "templates/homepage-bookmarks.yaml.j2"
+      dest: "{{ docker_homepage_base_dir }}/bookmarks.yaml"
+    - src: "templates/homepage-widgets.yaml.j2"
+      dest: "{{ docker_homepage_base_dir }}/widgets.yaml"
+    - src: "templates/homepage-services.yaml.j2"
+      dest: "{{ docker_homepage_base_dir }}/services.yaml"
+    - src: "templates/homepage-settings.yaml.j2"
+      dest: "{{ docker_homepage_base_dir }}/settings.yaml"
