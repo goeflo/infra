@@ -1,0 +1,7 @@
+# playbooks/setup_home_server.yml
+
+---
+- import_playbook: dns_setup.yml
+- import_playbook: upgrade_linux.yml
+- import_playbook: install_packages.yml
+

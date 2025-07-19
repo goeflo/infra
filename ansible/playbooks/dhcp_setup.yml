@@ -1,0 +1,8 @@
+# playbooks/dhcp_setup.yml
+
+- name: "setup dhcp server"
+  hosts: "dns_servers"
+  become: yes
+
+  roles:
+    - dhcp_server

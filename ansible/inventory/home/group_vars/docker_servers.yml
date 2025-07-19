@@ -1,3 +1,5 @@
+docker_base_dir: "docker"
+
 docker_specific_packages:
   - docker.io
   - docker-compose

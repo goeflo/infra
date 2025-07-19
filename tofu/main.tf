@@ -24,14 +24,14 @@ module "dns_server" {
     # depency checking via template id
     source_template_id = module.debian_template.vm_id
 
-    vm_name = "dns-01"
+    vm_name = "dns-02"
     vm_description = "dns server"
     tags = ["opentofu", "debian", "dns"]
-    vm_cores = 1
+    vm_cores = 2
     vm_memory = 2048 # 2GB
     network_bridge = ""
     ipv4_address_with_cidr = "192.168.2.7/24"
-    dns_servers = ["192.168.2.7"]
+    dns_servers = ["1.1.1.3"] # using public dns to install local dns
     gateway = "192.168.2.1"
     dns_domain = var.default_dns_domain
     ssh_key = [file("~/.ssh/id_rsa.pub")]

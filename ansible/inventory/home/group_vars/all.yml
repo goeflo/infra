@@ -1,4 +1,5 @@
 
+email: "florian@goeldenitz.org"
 domain_name: home.peekingface.eu
 
 base_debian_packages:

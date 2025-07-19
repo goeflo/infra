@@ -10,7 +10,6 @@
       ansible.builtin.apt:
         name: "{{
           base_debian_packages +
-          (dns_specific_packages | default([]) if inventory_hostname in groups['dns_servers'] else []) +
           (docker_specific_packages | default([]) if inventory_hostname in groups['docker_servers'] else [])
         }}"
         state: present
@@ -20,4 +19,4 @@
         name: "{{ ansible_user }}"
         groups: docker
         append: yes
-      when: inventory_hostname not in groups['docker_servers'] # Apply only base packages to non-DNS servers
+      when: inventory_hostname in groups['docker_servers']

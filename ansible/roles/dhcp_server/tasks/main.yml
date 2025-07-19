@@ -1,0 +1,23 @@
+- name : "{{ inventory_hostname }} | install dhcp package"
+  ansible.builtin.apt:
+    name: "isc-dhcp-server"
+    state: present
+
+- name: "{{ inventory_hostname }} | add interface to dhcp configuration"
+  ansible.builtin.lineinfile:
+    path: /etc/default/isc-dhcp-server
+    line : INTERFACESv4="eth0"
+    create: yes
+    regexp: '^INTERFACESv4=""'
+
+- name: "{{ inventory_hostname }} | copy dhcp configuration file"
+  ansible.builtin.template:
+    src: dhcpd.conf.j2
+    dest: "/etc/dhcp/dhcpd.conf"
+
+- name: "{{ inventory_hostname }} | restart systemd"
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: isc-dhcp-server.service
+    

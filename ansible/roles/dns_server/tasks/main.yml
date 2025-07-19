@@ -1,11 +1,29 @@
 
+- name : "{{ inventory_hostname }} | install dns base and specific packages"
+  ansible.builtin.apt:
+    name: "{{
+      base_debian_packages + dns_specific_packages
+    }}"
+    state: present
+
+- name : "{{ inventory_hostname }} | add {{ ansible_user }} to docker group"
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
 - name: "{{ inventory_hostname }} | disable default DNSStubListener in systemd-resolved"
   ansible.builtin.lineinfile:
     path: /etc/systemd/resolved.conf
     line: DNSStubListener=no
     create: yes
     regexp: '^#?DNSStubListener=' 
-  notify: restart systemd
+
+- name: "{{ inventory_hostname }} | restart systemd"
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: systemd-resolved.service
 
 - name: "{{ inventory_hostname }} | create bind9 directories"
   ansible.builtin.file:
@@ -27,7 +45,8 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0644'
-  notify: start or restart bind9 container
+  notify: 
+    - "start or restart bind9 container"
 
 - name: "{{ inventory_hostname }} | copy bind9 configuration files"
   ansible.builtin.template:
@@ -39,5 +58,35 @@
   loop:
     - { src: "{{ named_conf_template }}", dest: "{{ named_conf_file_name }}" }
     - { src: "{{ peekingface_zone_template }}" , dest: "{{ peekingface_zone_file }}" }
-  notify: start or restart bind9 container
+  
+- name: "{{ inventory_hostname }} | start dns docker container"
+  community.docker.docker_compose:
+    project_src: "{{ bind9_base_dir }}"
+    state: present 
 
+- name: "{{ inventory_hostname }} | remove nameserver configuration"
+  ansible.builtin.lineinfile:
+    path: /run/systemd/resolve/stub-resolv.conf
+    regexp: '^nameserver.*'
+    state: absent
+    
+- name: "{{ inventory_hostname }} | append local dns server to config"
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    line: DNS=192.168.2.7
+
+- name: "{{ inventory_hostname }} | restart systemd"
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: systemd-resolved.service
+
+#- name : "{{ inventory_hostname }} | set dns entry to local dns server"
+#  ansible.builtin.lineinfile:
+#    path: /run/systemd/resolve/resolv.conf
+#    regexp: '^nameserver.*'
+#    line: 'nameserver {{ item }}'
+#    insertafter: EOF
+#    state: present
+#  with_items:
+#    - "192.168.2.7"
