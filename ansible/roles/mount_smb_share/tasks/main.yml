@@ -1,0 +1,29 @@
+- name: "{{ inventory_hostname }} | install cifs utils packages"
+  ansible.builtin.apt:
+    pkg: 
+      - cifs-utils
+    state: present
+
+- name: "{{ inventory_hostname }} | copy cifs credentials file"
+  ansible.builtin.template:
+    src: "templates/cifs-credentials.j2"
+    dest: "/root/cifs-credentials"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0600'
+
+- name: "{{ inventory_hostname }} | create mount directory"
+  ansible.builtin.file:
+    path: "{{ smb_mount_point }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | mount smb share"
+  mount:
+    state: "mounted"
+    fstype: "cifs"
+    name: "{{ smb_mount_point }}"
+    src: "{{ smb_share }}"
+    opts: "credentials=/root/cifs-credentials,uid=3000,gid=3000,noperm"
