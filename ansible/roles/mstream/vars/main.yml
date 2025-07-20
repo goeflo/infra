@@ -1,0 +1,2 @@
+mstream_base_dir: "mstream"
+docker_mstream_base_dir: "{{ docker_base_dir }}/{{ mstream_base_dir }}"

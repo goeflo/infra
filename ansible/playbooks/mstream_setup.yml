@@ -1,0 +1,9 @@
+# playbooks/mstream_setup.yml
+
+- name: "mstream setup"
+  hosts: "dockerix"
+  become: yes
+
+  roles:
+    - mstream
+  

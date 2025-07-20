@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+    mstream:
+        image: lscr.io/linuxserver/mstream:latest
+        container_name: mstream
+        restart: unless-stopped
+        environment:
+            - PUID=1000
+            - PGID=10000
+            - TZ=Etc/UTC
+        volumes:
+            - /mnt/data/music:/music
+            - ./config:/config
+        networks:
+            - traefik
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.mstream.rule=Host(`mstream.home.peekingface.eu`)"
+            - "taefik.http.services.mstream.loadbalancer.server.port=3000"
+            - "traefik.http.routers.mstream.entrypoints=websecure"
+    
+networks:
+    traefik:
+        name: traefik
