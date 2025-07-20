@@ -81,6 +81,11 @@
     daemon_reload: true
     name: systemd-resolved.service
 
+- name: "{{ inventory_hostname }} | start bind9 docker container"
+  community.docker.docker_compose:
+    project_src: "{{ bind9_base_dir }}"
+    state: present 
+
 #- name : "{{ inventory_hostname }} | set dns entry to local dns server"
 #  ansible.builtin.lineinfile:
 #    path: /run/systemd/resolve/resolv.conf

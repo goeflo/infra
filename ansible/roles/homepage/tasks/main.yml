@@ -7,6 +7,15 @@
     mode: '0755'
     recurse: yes 
 
+- name: "{{ inventory_hostname }} | create homepage config directory"
+  ansible.builtin.file:
+    path: "{{ docker_homepage_base_dir }}/config"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+
 - name: "{{ inventory_hostname }} | copy homepage config files"
   ansible.builtin.template:
     src: "{{ item.src }}"
@@ -15,11 +24,18 @@
     group: "{{ ansible_user }}"
     mode: '0644'
   loop:
-    - src: "templates/homepage-bookmarks.yaml.j2"
-      dest: "{{ docker_homepage_base_dir }}/bookmarks.yaml"
-    - src: "templates/homepage-widgets.yaml.j2"
-      dest: "{{ docker_homepage_base_dir }}/widgets.yaml"
-    - src: "templates/homepage-services.yaml.j2"
-      dest: "{{ docker_homepage_base_dir }}/services.yaml"
-    - src: "templates/homepage-settings.yaml.j2"
-      dest: "{{ docker_homepage_base_dir }}/settings.yaml"
+    - src: "templates/bookmarks.yml.j2"
+      dest: "{{ docker_homepage_base_dir }}/config/bookmarks.yml"
+    - src: "templates/widgets.yml.j2"
+      dest: "{{ docker_homepage_base_dir }}/config/widgets.yml"
+    - src: "templates/services.yml.j2"
+      dest: "{{ docker_homepage_base_dir }}/config/services.yml"
+    - src: "templates/settings.yml.j2"
+      dest: "{{ docker_homepage_base_dir }}/config/settings.yml"
+    - src: "templates/docker-compose.yml.j2"
+      dest: "{{ docker_homepage_base_dir }}/docker-compose.yml"
+
+- name: "{{ inventory_hostname }} | start homepage docker container"
+  community.docker.docker_compose:
+    project_src: "{{ docker_homepage_base_dir }}"
+    state: present 

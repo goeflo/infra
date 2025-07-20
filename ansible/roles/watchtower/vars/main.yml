@@ -1,0 +1,2 @@
+watchtower_base_dir: "watchtower"
+docker_watchtower_base_dir: "{{ docker_base_dir }}/{{ watchtower_base_dir }}"

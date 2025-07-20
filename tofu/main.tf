@@ -24,7 +24,7 @@ module "dns_server" {
     # depency checking via template id
     source_template_id = module.debian_template.vm_id
 
-    vm_name = "dns-02"
+    vm_name = "dns-01"
     vm_description = "dns server"
     tags = ["opentofu", "debian", "dns"]
     vm_cores = 2
@@ -40,7 +40,7 @@ module "dns_server" {
 
 module "docker_server" {
     source = "./modules/vm_provisioning"
-    proxmox_node = var.default_proxmox_node
+    proxmox_node = "talentix"
     vm_storage = var.default_vm_storage
 
     # depency checking via template id

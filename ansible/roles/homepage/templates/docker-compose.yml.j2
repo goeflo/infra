@@ -5,20 +5,20 @@ services:
         image: ghcr.io/gethomepage/homepage:latest
         container_name: homepage
         volumes:
-            - ./homepage:/app/config
+            - ./config:/app/config
             - /var/run/docker.sock:/var/run/docker.sock
         networks:
             - traefik
         restart: unless-stopped
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.homepage.rule=Host(`homepage.home.bensemer.name`)"
+            - "traefik.http.routers.homepage.rule=Host(`homepage.home.peekingface.eu`)"
             - "traefik.http.routers.homepage.tls=true"
             - "traefik.http.routers.homepage.tls.certresolver=myresolver"
             - "traefik.http.routers.homepage.entrypoints=websecure"
 
         environment:
-            HOMEPAGE_ALLOWED_HOSTS: homepage.home.bensemer.name
+            HOMEPAGE_ALLOWED_HOSTS: homepage.home.peekingface.eu
 
 networks:
   traefik:

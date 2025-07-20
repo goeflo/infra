@@ -52,7 +52,8 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
 
     cpu { 
         cores = 1
-        type = "host"
+        #type = "host"
+        type = "x86-64-v2-AES"
     }
     
     memory { 

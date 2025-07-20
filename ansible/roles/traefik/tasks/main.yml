@@ -55,3 +55,7 @@
     group: "{{ ansible_user }}" 
     mode: '0755'
 
+- name: "{{ inventory_hostname }} | start traefik docker container"
+  community.docker.docker_compose:
+    project_src: "{{ docker_traefik_base_dir }}"
+    state: present 
