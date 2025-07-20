@@ -40,3 +40,7 @@ terraform.rc
 
 # Ignore all .env fle with sensitive data
 .env
+
+# Ignore ansible vault file
+ansible/playbooks/vault.yml
+
