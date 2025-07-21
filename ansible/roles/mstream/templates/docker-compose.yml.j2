@@ -18,8 +18,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.mstream.rule=Host(`mstream.home.peekingface.eu`)"
             - "taefik.http.services.mstream.loadbalancer.server.port=3000"
-            - "traefik.http.routers.mstream.entrypoints=websecure"
+            - "traefik.http.routers.mstream.entrypoints=web"
     
 networks:
     traefik:
-        name: traefik
+        external: true

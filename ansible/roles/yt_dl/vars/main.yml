@@ -1,0 +1,2 @@
+ytdl_base_dir: "ytdl"
+docker_ytdl_base_dir: "{{ docker_base_dir }}/{{ ytdl_base_dir }}"

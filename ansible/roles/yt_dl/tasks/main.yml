@@ -1,0 +1,26 @@
+- name: "{{ inventory_hostname }} | create yt download base directory"
+  ansible.builtin.file:
+    path: "{{ docker_ytdl_base_dir }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+    recurse: yes 
+
+#- name: "{{ inventory_hostname }} | create yt databse directory"
+#  ansible.builtin.file:
+#    path: "{{ docker_ytdl_base_dir }}/database"
+#    state: directory
+
+- name: "{{ inventory_hostname }} | copy docker-compose file"
+  ansible.builtin.template:
+    src: "docker-compose.yml.j2"
+    dest: "{{ docker_ytdl_base_dir }}/docker-compose.yml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+#- name: "{{ inventory_hostname }} | start yt download docker container"
+#  community.docker.docker_compose:
+#    project_src: "{{ docker_ytdl_base_dir }}"
+#    state: present 

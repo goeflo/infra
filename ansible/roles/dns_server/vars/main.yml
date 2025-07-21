@@ -11,10 +11,7 @@ peekingface_zone_template: db.home.peekingface.eu.j2
 peekingface_zone_file: home-peekingface-eu.zone
 
 dns_forwarders: 
-  - ip: 86.54.11.13
-  - ip: 86.54.11.213
-  - ip: 1.1.1.3
-  - ip: 1.0.0.3
+  - ip: 192.168.2.5
 
 # additional debian packages
 debian_packages:

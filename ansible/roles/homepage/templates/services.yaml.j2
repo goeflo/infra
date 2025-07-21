@@ -43,6 +43,16 @@
         widget:
             type: traefik
             url: http://{{ inventory_hostname }}.{{ domain_name }}:8080
+    - pihole:
+        description: DNS ad blocking
+        icon: pi-hole.png
+        href: 192.168.2.5
+        ping: 192.168.2.5
+        widget:
+            version: 6
+            type: pihole
+            url: https://192.168.2.5
+            key: Td2qCnFL
     - DNS:
         icon: mdi-dns
         href: http://192.168.2.7
@@ -62,7 +72,11 @@
         href: http://mstream.home.peekingface.eu/
         container: mstream
         showStats: true
-        
+    - youtubedl:
+        icon: mdi-youtube
+        href: http://ytdl.home.peekingface.eu/
+        container: ytdl
+
 - storage:
     - truenas:
         icon: truenas.png

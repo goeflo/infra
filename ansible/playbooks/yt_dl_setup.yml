@@ -1,0 +1,8 @@
+# playbooks/yt_dlp_setup.yml
+
+- name: "setup yt download"
+  hosts: "dockerix"
+  become: yes
+
+  roles:
+    - yt_dl
