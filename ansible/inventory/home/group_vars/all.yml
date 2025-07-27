@@ -2,8 +2,11 @@
 email: "florian@goeldenitz.org"
 domain_name: home.peekingface.eu
 
-smb_share: "//192.168.2.11/data"
-smb_mount_point: "/mnt/data"
+smb_data_share: "//192.168.2.11/data"
+smb_data_mount_point: "/mnt/data"
+
+smb_immich_share: "//192.168.2.11/immich"
+smb_immich_mount_point: "/mnt/immich"
 
 base_debian_packages:
   - curl

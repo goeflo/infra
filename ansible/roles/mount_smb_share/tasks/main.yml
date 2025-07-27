@@ -12,18 +12,34 @@
     group: "{{ ansible_user }}"
     mode: '0600'
 
-- name: "{{ inventory_hostname }} | create mount directory"
+- name: "{{ inventory_hostname }} | create data mount directory"
   ansible.builtin.file:
-    path: "{{ smb_mount_point }}"
+    path: "{{ smb_data_mount_point }}"
     state: directory
     owner: "{{ ansible_user }}" 
     group: "{{ ansible_user }}" 
     mode: '0755'
 
-- name: "{{ inventory_hostname }} | mount smb share"
+- name: "{{ inventory_hostname }} | create immich mount directory"
+  ansible.builtin.file:
+    path: "{{ smb_immich_mount_point }}"
+    state: directory
+    owner: "{{ ansible_user }}" 
+    group: "{{ ansible_user }}" 
+    mode: '0755'
+
+- name: "{{ inventory_hostname }} | mount data smb share"
   mount:
     state: "mounted"
     fstype: "cifs"
-    name: "{{ smb_mount_point }}"
-    src: "{{ smb_share }}"
+    name: "{{ smb_data_mount_point }}"
+    src: "{{ smb_data_share }}"
+    opts: "credentials=/root/cifs-credentials,uid=3000,gid=3000,noperm"
+
+- name: "{{ inventory_hostname }} | mount immich smb share"
+  mount:
+    state: "mounted"
+    fstype: "cifs"
+    name: "{{ smb_immich_mount_point }}"
+    src: "{{ smb_immich_share }}"
     opts: "credentials=/root/cifs-credentials,uid=3000,gid=3000,noperm"

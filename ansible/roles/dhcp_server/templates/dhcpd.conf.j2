@@ -12,6 +12,6 @@ ddns-update-style none;
 subnet 192.168.2.0 netmask 255.255.255.0 {
     range 192.168.2.200 192.168.2.240;
     option domain-name "{{ domain_name }}";
-    option domain-name-servers 192.168.2.7;
+    option domain-name-servers 192.168.2.7, 192.168.2.8;
     option routers 192.168.2.1;
 }

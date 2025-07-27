@@ -1,0 +1,13 @@
+# playbooks/immich_setup.yml
+
+
+- name: "setup immich server"
+  hosts: "immich"
+  become: yes
+
+  vars_files:
+    - vault.yml
+
+  roles:
+    - mount_smb_share
+    - immich

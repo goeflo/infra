@@ -43,20 +43,14 @@
         widget:
             type: traefik
             url: http://{{ inventory_hostname }}.{{ domain_name }}:8080
-    - pihole:
-        description: DNS ad blocking
-        icon: pi-hole.png
-        href: 192.168.2.5
-        ping: 192.168.2.5
-        widget:
-            version: 6
-            type: pihole
-            url: https://192.168.2.5
-            key: Td2qCnFL
-    - DNS:
+    - DNS-01:
         icon: mdi-dns
         href: http://192.168.2.7
         ping: http://192.168.2.7
+    - DNS-02:
+        icon: mdi-dns
+        href: http://192.168.2.8
+        ping: http://192.168.2.8
     - switch:
         icon: mdi-network
         href: http://192.168.2.2

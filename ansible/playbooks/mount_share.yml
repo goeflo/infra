@@ -1,7 +1,11 @@
 # playbooks/mount_share.yml
 
 - name: "mount nas share"
-  hosts: "dockerix"
+
+  hosts: 
+    - dockerix
+    - immich
+
   become: yes
 
   vars_files:

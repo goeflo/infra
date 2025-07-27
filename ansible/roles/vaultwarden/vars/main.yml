@@ -1,0 +1,2 @@
+vaultwarden_base_dir: "vaultwarden"
+docker_vaultwarden_base_dir: "{{ docker_base_dir }}/{{ vaultwarden_base_dir }}"

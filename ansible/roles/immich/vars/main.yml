@@ -1,0 +1,10 @@
+immich_base_dir: "immich"
+docker_immich_base_dir: "{{ docker_base_dir }}/{{ immich_base_dir }}"
+
+immich_upload_location: "/mnt/immich"
+immich_db_data_location: "./postgres"
+immich_tz: "Europe/Berlin"
+immich_version: "release"
+immich_db_password: "postgres"
+immich_db_username: "postgres"
+immich_db_database_name: "immich"

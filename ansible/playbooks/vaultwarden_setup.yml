@@ -1,0 +1,8 @@
+# playbooks/vaultwarden_setup.yml
+
+- name: "setup vaultwarden"
+  hosts: "dockerix"
+  become: yes
+
+  roles:
+    - vaultwarden
