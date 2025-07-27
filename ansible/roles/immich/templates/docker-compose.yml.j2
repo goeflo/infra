@@ -69,5 +69,14 @@ services:
     shm_size: 128mb
     restart: always
 
+  newt:
+    image: fosrl/newt
+    container_name: newt
+    restart: unless-stopped
+    environment:
+      - PANGOLIN_ENDPOINT=https://pangolin.bensemer.name
+      - NEWT_ID=jsx2kmygb14dua9
+      - NEWT_SECRET=wk3zewt27ermd132bnd0m3axx6yj1b3wbp6ihaipfgk2nraz
+
 volumes:
   model-cache:

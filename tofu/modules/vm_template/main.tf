@@ -73,7 +73,8 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
         type = "ssh"
         user = var.ssh_username
         #host = var.proxmox_node + "." + var.dns_domain
-        host = join(".", [var.proxmox_node, var.dns_domain])
+        #host = join(".", [var.proxmox_node, var.dns_domain])
+        host = "192.168.2.20"
         password = var.ssh_password
     }
 

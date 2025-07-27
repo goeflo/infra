@@ -1,4 +1,35 @@
 # variables.tf (in root)
+
+variable "dns_servers_config" {
+  description = "map of dns server configuration"
+  type = map(object({
+    proxmox_node = string
+    vm_name = string
+    vm_description = string
+    ipv4_address_with_cidr = string
+    #dns_servers = list(string)
+  }))
+  default = {
+    "dns-01" = {
+      proxmox_node = "magnix"
+      vm_name = "dns-01"
+      vm_description = "primary dns server"
+      ipv4_address_with_cidr = "192.168.2.7/24"
+      source_template_id = 9001
+      #dns_servers = ["1.1.1.1"] # using public dns to install local dns
+    }
+    "dns-02" = {
+      proxmox_node = "magnix"
+      vm_name = "dns-02"
+      vm_description = "secondary dns server"
+      ipv4_address_with_cidr = "192.168.2.8/24" 
+      source_template_id = 9001
+      #dns_servers = ["1.1.1.1"] # using public dns to install local dns
+    }
+  }
+}
+
+
 variable "proxmox_endpoint" {
   description = "Proxmox API endpoint URL"
   type        = string
@@ -32,6 +63,7 @@ variable "default_proxmox_node" {
   description = "Default Proxmox node name"
   type = string
   default = "magnix"
+  #default = "192.168.2.20"
 }
 
 variable "default_vm_storage" {

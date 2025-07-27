@@ -5,7 +5,7 @@ variable "vm_storage" { nullable = false }
 variable "vm_name" { nullable = false }
 #variable "vm_id" { nullable = false }
 variable "network_bridge" {}
-variable "source_template_id" { type = number }
+variable "source_template_id" { nullable = false }
 variable "tags" { default = ["opentofu", "debian"] }
 variable "vm_description" {}
 variable "ipv4_address_with_cidr" { nullable = false }
