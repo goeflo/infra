@@ -43,6 +43,10 @@
         widget:
             type: traefik
             url: http://{{ inventory_hostname }}.{{ domain_name }}:8080
+    - dozzle:
+        description: docker log viewer
+        href: https://dozzle.home.peekingface.eu/
+        container: dozzle
     - DNS-01:
         icon: mdi-dns
         href: http://192.168.2.7

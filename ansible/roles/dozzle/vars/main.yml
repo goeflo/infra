@@ -1,0 +1,2 @@
+dozzle_base_dir: "dozzle"
+docker_dozzle_base_dir: "{{ docker_base_dir }}/{{ dozzle_base_dir }}"

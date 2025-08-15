@@ -4,8 +4,8 @@
 option domain-name "{{ domain_name }}";
 option domain-name-servers {{ ansible_host }};
 
-default-lease-time 600;
-max-lease-time 7200;
+default-lease-time 345600;
+max-lease-time 432000;
 
 ddns-update-style none;
 

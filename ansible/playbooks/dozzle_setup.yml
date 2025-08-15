@@ -1,8 +1,8 @@
-# playbooks/homepage_setup.yml
+# playbooks/dozzle_setup.yml
 
 - name: "setup homepage"
   hosts: "dockerix"
   become: yes
 
   roles:
-    - homepage
+    - dozzle

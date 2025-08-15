@@ -1,0 +1,21 @@
+
+services:
+    dozzle:
+        container_name: dozzle
+        image: amir20/dozzle:latest
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - traefik
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.dozzle.rule=Host(`dozzle.home.peekingface.eu`)"
+            - "traefik.http.routers.dozzle.tls=true"
+            - "traefik.http.routers.dozzle.tls.certresolver=myresolver"
+            - "taefik.http.services.dozzle.loadbalancer.server.port=8080"
+            - "traefik.http.routers.dozzle.entrypoints=websecure"
+
+networks:
+    traefik:
+        external: true
